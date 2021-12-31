@@ -1,6 +1,9 @@
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -22,6 +25,7 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
         initComponents();
         getFreeBtn.setVisible(false);
     }
+    // <editor-fold defaultstate="collapsed" desc="declare variables">
     // initalize values
     int cokePrice = 10000;
     int pepsiPrice = 10000;
@@ -38,6 +42,13 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
     
     boolean getFree = false; // this variable to check if the user has received the free product and set the price again
     
+    int hour = 23;
+    int min = 59;
+    int sec = 60;
+    Timer timer;
+    
+    boolean increaseChance = false;
+    // </editor-fold>
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -296,6 +307,25 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(46, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(192, 192, 192))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(98, 98, 98)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(getFreeBtn)
+                            .addComponent(purchaseBtn))
+                        .addGap(123, 123, 123)
+                        .addComponent(clearBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cancelBtn)
+                        .addGap(108, 108, 108))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(115, 115, 115)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,26 +339,7 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(69, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addGap(192, 192, 192))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(75, 75, 75)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(getFreeBtn)
-                            .addComponent(purchaseBtn))
-                        .addGap(123, 123, 123)
-                        .addComponent(clearBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cancelBtn)
-                        .addGap(108, 108, 108))))
+                .addGap(0, 87, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -364,9 +375,13 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
         // cancel the purchase and receive a refund
         // when click button cancel the purchase, a dialog box will pop up to confirm the purchase and machine will return the money for user.
         //
-        //JOptionPane.showConfirmDialog(null, "Do you want to cancel purchasing and receive a refund?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        System.exit(0);
-        
+        int money = Integer.parseInt(txtMoney.getText());
+        int confirmed = JOptionPane.showConfirmDialog(null, "Do you want to cancel the purchase of water?", "Cancel the request",JOptionPane.YES_NO_OPTION);
+
+        if (confirmed == JOptionPane.YES_OPTION) {
+            JOptionPane.showMessageDialog(rootPane, "You have canceled the purchase of water, please get your money back: " + money + " VND.");
+            System.exit(0);
+        }           
     }//GEN-LAST:event_cancelBtnActionPerformed
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
@@ -436,6 +451,10 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
     private void purchaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseBtnActionPerformed
        // proceed to pay when there is enough money
        
+       
+        String checkNullMoney;
+        checkNullMoney = txtMoney.getText();
+       
         int money = 0;
         int change = 0;
              
@@ -452,15 +471,21 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
         int pepsiQuantity = Integer.parseInt(txtPepsiQuantity.getText());
         int sodaQuantity = Integer.parseInt(txtSodaQuantity.getText());
        
-        money = Integer.parseInt(txtMoney.getText());
-       
-        if (cokeRB.isSelected()) {
-            change = money - (cokePrice * cokeQuantity);
-        } else if (pepsiRB.isSelected()) {
-            change = money - (pepsiPrice * pepsiQuantity);
-        } else if (sodaRB.isSelected()) {
-            change = money - (sodaPrice * sodaQuantity);
+        
+        
+        if (checkNullMoney == null) {
+            JOptionPane.showMessageDialog(rootPane, "Please put money in the machine before buying");
+        } else {
+            money = Integer.parseInt(txtMoney.getText());
+            if (cokeRB.isSelected()) {
+                change = money - (cokePrice * cokeQuantity);
+            } else if (pepsiRB.isSelected()) {
+                change = money - (pepsiPrice * pepsiQuantity);
+            } else if (sodaRB.isSelected()) {
+                change = money - (sodaPrice * sodaQuantity);
+            }
         }
+ 
         
         checkMoney();
         
@@ -575,11 +600,28 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
         }     
     }//GEN-LAST:event_soda_DecreaseBtnActionPerformed
 
+    // </editor-fold>
     private void getFreeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getFreeBtnActionPerformed
-        // TODO add your handling code here:
+        // button to get free product
+        
+        if (cokeRB.isSelected()) {
+            totalWin += 10000;
+        } 
+        if (pepsiRB.isSelected()) {
+            totalWin += 10000;
+        }
+        if (sodaRB.isSelected()) {
+            totalWin += 20000;
+        }
+        
+        JOptionPane.showMessageDialog(rootPane,"This is your free product");
+        
+        clearData();
+        getFreeBtn.setVisible(false);
+        reInstallAfterWin();
     }//GEN-LAST:event_getFreeBtnActionPerformed
     
-    // </editor-fold>
+    
     
     // change total price when change quantity of product   
     public void changeTotalPrice() {
@@ -598,6 +640,7 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
         // with real money and value of it.
         
         int money = 0;
+        
         money = Integer.parseInt(txtMoney.getText());
         if (money != 10000 && money != 20000 && money != 50000 && money != 100000 && money != 200000) {
             JOptionPane.showMessageDialog(rootPane, "The amount of money you input is not valid. Please try again.");
@@ -617,15 +660,28 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
     }
     
     // probability 10% to receive a free product
-    public boolean probability() {
+    public boolean probability10() {
         Random rand = new Random();
-        boolean freeProduct = rand.nextInt(1) == 0;
+        boolean freeProduct = rand.nextInt(1) == 0; // 1/10 = 10%
+        return freeProduct;
+    }
+    
+    // probability 50% to receive a free product
+    public boolean probability50() {
+        Random rand = new Random();
+        boolean freeProduct = rand.nextInt(2) == 0; // 1/2 = 50%
         return freeProduct;
     }
     
     // win a prize
     public void freeProduct (boolean freeSoda) {
-        boolean chanceForFree = probability();
+        boolean chanceForFree;
+        // check if the budget limit is reached?, if not increase the chance of getting the product by 50%
+        if (increaseChance == true) {
+            chanceForFree = probability50();
+        } else { // On normal days, the chance of receiving the product is 10%.
+            chanceForFree = probability10();
+        }        
         if (chanceForFree == true) {
             if (freeSoda == true) {
                 JOptionPane.showMessageDialog(rootPane, "You are very lucky, you get a free product 😁. Buy it for 0 VND");
@@ -636,18 +692,10 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
                 cokeRB.setText("Coke 0 VND");
                 pepsiRB.setText("Pepsi 0 VND");
                 sodaRB.setText("Soda 0 VND");
-                if (cokeRB.isSelected()) {
-                    totalWin += 10000;
-                } 
-                if (pepsiRB.isSelected()) {
-                    totalWin += 10000;
-                }
-                if (sodaRB.isSelected()) {
-                    totalWin += 20000;
-                }
-                countCoke = -1; // -1 is because after buying for 0 VND, the count will increase 1
-                countPepsi = -1;
-                countSoda = -1;
+                
+                countCoke = 0; // set amount of product is 0
+                countPepsi = 0;
+                countSoda = 0;
             } else {
                 JOptionPane.showMessageDialog(rootPane, "You are very lucky, you get a free product 😁. Buy it for 0 VND except Soda because it is beyond our budget");
                 sodaRB.setVisible(false);
@@ -688,6 +736,39 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
             return false;
         }
         return true;
+    }
+    
+    // check time
+    
+    public void countDown() {
+        
+    
+        timer = new Timer(1000, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                if (min == 0) {
+                    min = 60;
+                    hour --;
+                }                
+                if (hour < 0) {
+                    // check if the budget limit is reached, if not increase the chance of getting the product by 50%
+                    if (totalWin < 50000) {
+                        increaseChance = true;
+                    }
+                    hour = 23;
+                    min = 59;
+                    sec = 60;
+                } else {
+                    if (sec == 0) {
+                    sec = 60;
+                    min --;
+                    }
+                    sec --;
+                }
+            }           
+        });
+        timer.start();
     }
     /**
      * @param args the command line arguments

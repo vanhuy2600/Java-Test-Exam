@@ -16,5 +16,10 @@ public class testRandom {
         Random rand = new Random();
         boolean v = rand.nextInt(10) == 0;
         System.out.println(v);
+
+        boolean freeProduct = rand.nextInt(2) == 0; // 1/2 = 50%
+        System.out.println("c2= " + freeProduct);
+
+
     } 
 }
