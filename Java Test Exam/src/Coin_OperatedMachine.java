@@ -662,7 +662,7 @@ public class Coin_OperatedMachine extends javax.swing.JFrame {
     // probability 10% to receive a free product
     public boolean probability10() {
         Random rand = new Random();
-        boolean freeProduct = rand.nextInt(1) == 0; // 1/10 = 10%
+        boolean freeProduct = rand.nextInt(10) == 0; // 1/10 = 10%
         return freeProduct;
     }
     
